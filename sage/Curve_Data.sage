@@ -49,15 +49,15 @@ def CurveDataSample(p, r, s, *args):
 
     if len(args) == 0:
         Tuple_List = [ [Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element()] for i in range(5*s / 4)]
-        L = list(Set(Tuple_List))
     elif len(args) == 1:
-        Tuple_List = [ [Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), args[0]] for i in range(5*s / 4)]
-        L = list(Set(Tuple_List))
+        Tuple_List = [ [args[0], Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element()] for i in range(5*s / 4)]
     elif len(args) == 2:
-        Tuple_List = [ [Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), args[1], args[0]] for i in range(5*s / 4)]
-        L = list(Set(Tuple_List))
+        Tuple_List = [ [args[0], args[1], Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element()] for i in range(5*s / 4)]
+
     else:
         return print("Too many arguments specified!")
+
+    L = list(Set(Tuple_List))
 
     for Tuple in L:
         if Poly_Counter < s:
