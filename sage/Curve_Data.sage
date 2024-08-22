@@ -19,8 +19,28 @@ def IsSeparable(f):
     f_prime = f.derivative()
     return f.gcd(f_prime) == 1
 
+# Function to compute data for all curves over GF(p^r)
+def CurveDataFull(p, r):
+    Fp = GF(p**r)
+    R.<x> = PolynomialRing(Fp)
+
+    Poly_Counter = 0
+    p_ranks = []
+
+    for Tuple in Tuples(Fp, 6):
+        f = R(x**9 + x**7 + x**6 + sum(Tuple[i]*x**i for i in range(6)))
+        if IsSeparable(f):
+            p_ranks.append((CartierMatrix(f, p, r)**4).rank())
+            Poly_Counter += 1
+
+    res = [0, 0, 0, 0, 0]
+    for i in p_ranks:
+        res[i] += 1
+    
+    return p, r, Poly_Counter, res[0], res[1], res[2], res[3], res[4]
+
 # Function to compute data for curves over GF(p^r)
-def CurveData(p, r, s):
+def CurveDataSample(p, r, s):
     Fp = GF(p**r)
     R.<x> = PolynomialRing(Fp)
 
