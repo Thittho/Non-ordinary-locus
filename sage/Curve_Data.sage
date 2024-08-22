@@ -39,17 +39,25 @@ def CurveDataFull(p, r):
     
     return p, r, Poly_Counter, res[0], res[1], res[2], res[3], res[4]
 
-# Function to compute data for curves over GF(p^r)
-def CurveDataSample(p, r, s):
+# Function to compute data for sample of curves over GF(p^r)
+def CurveDataSample(p, r, s, *args):
     Fp = GF(p**r)
     R.<x> = PolynomialRing(Fp)
 
     Poly_Counter = 0
     p_ranks = []
 
-    Tuple_List = [ [Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element()] for i in range(5*s / 4)]
-
-    L = list(Set(Tuple_List))
+    if len(args) == 0:
+        Tuple_List = [ [Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element()] for i in range(5*s / 4)]
+        L = list(Set(Tuple_List))
+    elif len(args) == 1:
+        Tuple_List = [ [Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), args[0]] for i in range(5*s / 4)]
+        L = list(Set(Tuple_List))
+    elif len(args) == 2:
+        Tuple_List = [ [Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), args[1], args[0]] for i in range(5*s / 4)]
+        L = list(Set(Tuple_List))
+    else:
+        return print("Too many arguments specified!")
 
     for Tuple in L:
         if Poly_Counter < s:
