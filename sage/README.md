@@ -19,9 +19,9 @@ The data is output in the following format:
 
 ### Sample Example
 
-The command `CurveDataSample(p, r, s, t0, t1)` returns a count of the number of curves with various $p$-ranks for the sample of curves over $\mathbb{F}_q$.  Again, $q = p^r$ for $p$ a rational prime, but this command also allows the user to specify the sample size $s$.
+The command `CurveDataSample(p, r, s, t0, t1)` returns a count of the number of curves with various $p$-ranks for a sample of curves over $\mathbb{F}_q$.  Again, $q = p^r$ for $p$ a rational prime, but this command also allows the user to specify the sample size $s$.
 
-Further, this function takes two optional arguments, allowing the user to specify coefficients in the model of the hyperelliptic curve family.  The user can set the constant coefficient $t_0$, or the constant and linear coefficients $t_0$ and $t_1$.  
+Further, this function takes two optional arguments, allowing the user to specify coefficients in the model of the hyperelliptic curve family.  The user can set the constant coefficient $t_0$, or the constant and linear coefficients $t_0$ and $t_1$.  If the optional arguments are not specified, then these coefficients will be randomly chosen from $\mathbb{F}_q$. 
 
 INPUT:
 * `p` - a rational prime number
@@ -40,8 +40,7 @@ The data is output in the following format:
 
 (p, r, sample size, # p-rank 0 curves, # p-rank 1 curves, # p-rank 2 curves, # p-rank 3 curves, # p-rank 4 curves)
 
-
-Below is an example of how these optional arguments might be used on machines with limited memory capacity, by only storing a subset of tuples at a time and adding together the results.
+Below is an example of how these optional arguments might be used on machines with limited memory capacity.  Instead of having to store 4.9 million tuples of coefficients, the computer only has to store 100,000 tuples at a time.  As $t_0$ ranges over $\mathbb{F}_q$, the results are added together.  
 
 ```python
 sage: attach("PATH/Curve_Data.sage")

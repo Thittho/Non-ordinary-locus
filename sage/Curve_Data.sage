@@ -53,7 +53,6 @@ def CurveDataSample(p, r, s, *args):
         Tuple_List = [ [args[0], Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element()] for i in range(5*s / 4)]
     elif len(args) == 2:
         Tuple_List = [ [args[0], args[1], Fp.random_element(), Fp.random_element(), Fp.random_element(), Fp.random_element()] for i in range(5*s / 4)]
-
     else:
         return print("Too many arguments specified!")
 
