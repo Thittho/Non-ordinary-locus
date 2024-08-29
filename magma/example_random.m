@@ -3,7 +3,7 @@ Attach("~/github/Non-ordinary-locus/magma/data_code.m");
 
 s := 50000000;
 r := 2;
-for p in PrimesInInterval(199,199) do
+for p in PrimesInInterval(499,499) do
     "p =", p;
     time p_r := CurveDataForP(p, r, s);
     "p-rank data:", p_r;

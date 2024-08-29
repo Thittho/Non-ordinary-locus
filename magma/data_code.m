@@ -27,6 +27,9 @@ intrinsic CurveDataForP(p::RngIntElt, r::RngIntElt, s::RngIntElt : i0 := "not de
     PolyList10 := [x^9+x^7+x^6+(&+[t[i+1]*x^i : i in [0..5]]) : t in TupleList];
 
     time PolyList10_2 := [f : f in PolyList10 | Discriminant(f) ne 0];
+    //S<X,Y> := PolynomialRing(Fp, 2);
+    //time PolyList10_2 := [S!(Y^10*Evaluate(f, X/Y)) : f in PolyList10_2];
+    //time inv := [ShiodaInvariants(Transvectant(f, f, 6)) : f in PolyList10_2];
 
     if #PolyList10_2 gt s then
         PolyList10_2 := PolyList10_2[1..s];

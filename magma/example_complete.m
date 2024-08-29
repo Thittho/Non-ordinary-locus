@@ -10,7 +10,7 @@ p := 47;
 end for;
 */
 
-for i0 in [22..p-1] do
+for i0 in [43..46] do
     "i0 := ", i0;
     time p_r := CurveDataForPComplete(p, 1 : i0 := i0);
     "p-rank data:", p_r;
