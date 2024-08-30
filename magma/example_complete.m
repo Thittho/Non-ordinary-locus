@@ -1,18 +1,14 @@
 Attach("~/github/Non-ordinary-locus/magma/data_code.m");
 
-p := 47;
+for p in PrimesInInterval(17,17) do
+    res := [0,0,0,0,0];
 
-/*for i0 in GF(p^2) do
-    "i0 := ", i0;
-    time p_r := CurveDataForPComplete(p, 2 : i0 := i0);
-    "p-rank data:", p_r;
-    Write("~/p_rank_fp2_complete.m", "[*" cat Sprint(p) cat ", " cat Sprint(p_r) cat "*],");
-end for;
-*/
-
-for i0 in [43..46] do
-    "i0 := ", i0;
-    time p_r := CurveDataForPComplete(p, 1 : i0 := i0);
-    "p-rank data:", p_r;
-    Write("~/p_rank_fp_complete.m", "[*" cat Sprint(p) cat ", " cat Sprint(p_r) cat "*],");
+    for i0 in [0..p-1] do
+        "i0 := ", i0;
+        p_r := CurveDataForPComplete(p, 1 : i0 := i0);
+        "p-rank data:", p_r;
+        res := [res[i]+p_r[i] : i in [1..5]];
+    end for;
+    res;
+    //Write("~/p_rank_fp_complete_new.m", "[*" cat Sprint(p) cat ", 1, " cat Sprint(res) cat "*],");
 end for;
