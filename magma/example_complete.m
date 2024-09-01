@@ -1,9 +1,9 @@
 Attach("~/github/Non-ordinary-locus/magma/data_code.m");
 
-for p in PrimesInInterval(29,29) do
+for p in PrimesInInterval(31,31) do
     res := [0,0,0,0,0];
 
-    for i0 in [25..28] do
+    for i0 in [30..30] do
         "i0 := ", i0;
         p_r := CurveDataForPComplete(p, 1 : i0 := i0);
         "p-rank data:", p_r;
