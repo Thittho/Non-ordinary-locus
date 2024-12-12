@@ -1,4 +1,4 @@
-intrinsic NotRoot(Fp::FldFin, s::RngIntElt) -> FldFinElt
+intrinsic NotRoot(Fp::FldFin, s::RngIntElt) -> .
     {Given a field Fp and an integer s, returns an element of Fp which is not a s-th power. Return an error if there is no such element.}
     Fpx<x> := PolynomialRing(Fp);
     if #Roots(x^s-1) eq 1 then
