@@ -23,6 +23,9 @@ function sample_eightpoints(K, sample)
     // York: Modified original method to only find a number of hyperelliptic curves
     // equal to variable sample
     //
+    // In Howe's original code, the automorphism group of the hyperelliptic curve was tracked
+    // We have modified the code to eliminate curves with non-trivial automorphisms from the data set
+    //
     // The following is a modification of Howe's documentation for the new setting
     //
     // Howe: Find PGL2(K) orbit reps for eight points of P^1(K). 
@@ -30,9 +33,8 @@ function sample_eightpoints(K, sample)
     // What is our normal form?
     //   Given eight points, put one at infinity, one at 0, and ask that the sum
     //   of the rest be 1. This may not be possible for the given choice of points
-    //   to put at oo and 0... but it is possible for *some* choice, with one
-    //   exception: When K = GF(7) and the eight points are the elements 
-    //   of P^1(K). We treat that one case separately.
+    //   to put at oo and 0, but it is possible for *some* choice, with one
+    //   exception that we choose to exclude from our data set
     // 
     // So: Loop a1 < a2 < ... < a5 and set a6 = 1 - a1 - a2 - a3 - a4 - a5.
     // Demand that a5 < a6.
@@ -43,8 +45,6 @@ function sample_eightpoints(K, sample)
     // In turn, move each a_i to infinity, and repeat same loop as above, 
     // and again demand that our original a1 through a6 are the smallest.
     //
-    // In Howe's original code, the automorphism group of the hyperelliptic curve was tracked
-    // We have modified the code to eliminate curves with non-trivial automorphisms from the data set
     //
 
     q := #K;
@@ -143,6 +143,9 @@ end function;
 function sample_tenpoints(K, sample)
     // York: Modified original method to only find a number of hyperelliptic curves
     // equal to variable sample
+    //
+    // In Howe's original code, the automorphism group of the hyperelliptic curve was tracked
+    // We have modified the code to eliminate curves with non-trivial automorphisms from the data set
     // 
     // The following is a modification of Howe's documentation for the new setting
     //
@@ -151,8 +154,8 @@ function sample_tenpoints(K, sample)
     // What is our normal form?
     //   Given eight points, put one at infinity, one at 0, and ask that the sum
     //   of the rest be 1. This may not be possible for the given choice of points
-    //   to put at oo and 0, but it is possible for *some* choice, 
-    //   with one exception that we exclude at the start
+    //   to put at oo and 0, but it is possible for *some* choice, with one exception
+    //   that we choose to exclude from our data set
     // 
     // So: Loop a1 < a2 < ... < a6 < a7 and set a8 = 1 - a1 - a2 - a3 - a4 - a5 - a6 - a7
     // Demand that a7 < a8.
@@ -163,8 +166,6 @@ function sample_tenpoints(K, sample)
     // In turn, move each a_i to infinity, and repeat same loop as above, 
     // and again demand that our original a1 through a8 are the smallest.
     //
-    // In Howe's original code, the automorphism group of the hyperelliptic curve was tracked
-    // We have modified the code to eliminate curves with non-trivial automorphisms from the data set
     //
 
     q := #K;
@@ -265,6 +266,9 @@ end function;
 function sample_twelvepoints(K, sample)
     // York: Modified original function to only find a number of hyperelliptic curves
     // equal to variable sample
+    //
+    // In Howe's original code, the automorphism group of the hyperelliptic curve was tracked
+    // We have modified the code to eliminate curves with non-trivial automorphisms from the data set
     // 
     // The following is a modification of Howe's documentation for the new setting
     //
@@ -274,7 +278,7 @@ function sample_twelvepoints(K, sample)
     //   Given twelve points, put one at infinity, one at 0, and ask that the sum
     //   of the rest be 1. This may not be possible for the given choice of points
     //   to put at oo and 0, but it is possible for *some* choice, with one exception
-    //   that we eliminate at the start
+    //   that we choose to exclude from our data set
     // 
     // So: Loop a1 < a2 < ... < a8 < a9 and set a10 = 1 - a1 - a2 - a3 - a4 - a5 - a6 - a7 - a8 - a9.
     // Demand that a9 < a10.
@@ -285,8 +289,6 @@ function sample_twelvepoints(K, sample)
     // In turn, move each a_i to infinity, and repeat same loop as above, 
     // and again demand that our original a1 through a10 are the smallest.
     //
-    // In Howe's original code, the automorphism group of the hyperelliptic curve was tracked
-    // We have modified the code to eliminate curves with non-trivial automorphisms from the data set
     //
 
     q := #K;
@@ -415,7 +417,7 @@ end function;
 
 /*
 ================================================================================
-// Code modified from Everett Howe finding hyperelliptic curves with Galois type (1,1,...,1)
+// Code for generating p-rank data for hyperelliptic curves
 ================================================================================
 */
 
