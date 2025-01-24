@@ -1,17 +1,4 @@
-intrinsic NotRoot(Fp::FldFin, s::RngIntElt) -> .
-    {Given a field Fp and an integer s, returns an element of Fp which is not a s-th power. Return an error if there is no such element.}
-    Fpx<x> := PolynomialRing(Fp);
-    if #Roots(x^s-1) eq 1 then
-        return "Error: every element of Fp is a s-th power.";
-    end if;
-    a := Random(Fp);
-    while IsPower(a, s) do
-        a := Random(Fp);
-    end while;
-    return a;
-end intrinsic;
-
-intrinsic CartierMatrix(f::RngUPolElt, p::RngIntElt : r := 1) -> .
+intrinsic HasseWittMatrix(f::RngUPolElt, p::RngIntElt : r := 1) -> .
     {Given a univariate polynomial f with coefficients in F_p^r (or coercible in F_p^r), return its Cartier-Manin matrix.}
     if Type(BaseRing(Parent(f))) ne FldFin then
         assert IsCoercible(PolynomialRing(GF(p^r)), f);
@@ -19,10 +6,10 @@ intrinsic CartierMatrix(f::RngUPolElt, p::RngIntElt : r := 1) -> .
     end if;
     g := (Degree(f)-1) div 2;
     h := f^((p-1) div 2);
-    return Matrix([[p*i-j ge 0 select Coefficient(h, p*i-j) else 0 : i in [1..g]] : j in [1..g]]);
+    return Matrix([[p*j-i ge 0 select Coefficient(h, p*j-i) else 0 : j in [1..g]] : i in [1..g]]);
 end intrinsic;
 
-intrinsic StableCartierManin(M::Any, p::RngIntElt : r := 1) -> .
+intrinsic StableHasseWitt(M::Any, p::RngIntElt : r := 1) -> .
     {}
     if r eq 1 then 
         return M^(Ncols(M));
@@ -135,7 +122,7 @@ intrinsic CurveDataForP(g::RngIntElt, p::RngIntElt, r::RngIntElt : s := 0) -> Se
     end if;
 
     "Computing p-ranks...";
-    time p_ranks := [Rank(StableCartierManin(CartierMatrix(f, p : r := r), p : r := r)) : f in PolyList];
+    time p_ranks := [Rank(StableHasseWitt(HasseWittMatrix(f, p : r := r), p : r := r)) : f in PolyList];
 
     res := [0 : i in [1..g+1]];
     for i in p_ranks do
@@ -145,3 +132,17 @@ intrinsic CurveDataForP(g::RngIntElt, p::RngIntElt, r::RngIntElt : s := 0) -> Se
     return res;
 end intrinsic;
 
+/*
+intrinsic NotRoot(Fp::FldFin, s::RngIntElt) -> .
+    {Given a field Fp and an integer s, returns an element of Fp which is not a s-th power. Return an error if there is no such element.}
+    Fpx<x> := PolynomialRing(Fp);
+    if #Roots(x^s-1) eq 1 then
+        return "Error: every element of Fp is a s-th power.";
+    end if;
+    a := Random(Fp);
+    while IsPower(a, s) do
+        a := Random(Fp);
+    end while;
+    return a;
+end intrinsic;
+*/

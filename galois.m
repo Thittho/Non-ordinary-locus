@@ -396,7 +396,7 @@ end function;
 ================================================================================
 */
 
-function CartierMatrix(f, p : r := 1)
+function HasseWittMatrix(f, p : r := 1)
     if Type(BaseRing(Parent(f))) ne FldFin then
         assert IsCoercible(PolynomialRing(GF(p^r)), f);
         f := PolynomialRing(GF(p^r))!f;
@@ -404,10 +404,10 @@ function CartierMatrix(f, p : r := 1)
     
     g := (Degree(f)-1) div 2;
     h := f^((p-1) div 2);
-    return Matrix([[p*i-j ge 0 select Coefficient(h, p*i-j) else 0 : i in [1..g]] : j in [1..g]]);
+    return Matrix([[p*j-i ge 0 select Coefficient(h, p*j-i) else 0 : j in [1..g]] : i in [1..g]]);
 end function;
 
-function StableCartierManin(M, p : r := 1)
+function StableHasseWitt(M, p : r := 1)
     if r eq 1 then 
         return M^(Ncols(M));
     end if;
@@ -449,7 +449,7 @@ function CurveDataForPGalois(g, p, r, s)
     end if;
 
     "Computing p-ranks...";
-    time p_ranks := [Rank(StableCartierManin(CartierMatrix(f, p : r := r), p : r := r)) : f in PolyList];
+    time p_ranks := [Rank(StableHasseWitt(HasseWittMatrix(f, p : r := r), p : r := r)) : f in PolyList];
 
     res := [0]; //make list of zeroes of length g+1
     for k in [1..g] do
