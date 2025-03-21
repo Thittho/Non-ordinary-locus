@@ -1,0 +1,584 @@
+// P_Rank_0_Samples.magma
+// Version 2.0
+// March 2025
+
+// Thomas Bouchet, Erik Davis, Steven Groen, Zachary Porat, Benjamin York
+
+/*
+================================================================================
+// Loading Everett Howe's genus-2 and genus-3 code.
+================================================================================
+*/
+
+load "Hyperelliptic3.magma";
+
+/*
+================================================================================
+// Finding hyperelliptic curves with Galois type (1,1,...,1)
+================================================================================
+*/
+
+
+/*
+================================================================================
+// Computing the Hasse-Witt Matrix
+================================================================================
+*/
+
+function HasseWittMatrix(f, p : r := 1)
+    if Type(BaseRing(Parent(f))) ne FldFin then
+        assert IsCoercible(PolynomialRing(GF(p^r)), f);
+        f := PolynomialRing(GF(p^r))!f;
+    end if;
+    
+    g := (Degree(f)-1) div 2;
+    h := f^((p-1) div 2);
+    return Matrix([[p*i-j ge 0 select Coefficient(h, p*i-j) else 0 : i in [1..g]] : j in [1..g]]);
+end function;
+
+function StableHasseWitt(M, p : r := 1)
+    if r eq 1 then 
+        return M^(Ncols(M));
+    end if;
+    return &*([M] cat [Matrix([[M[i,j]^(p^k) : j in [1..Ncols(M)]] : i in [1..Nrows(M)]]) : k in [1..Ncols(M)-1]]);
+end function;
+
+/*
+================================================================================
+// Extracting Polynomials From Lists Of Coefficients
+================================================================================
+*/
+
+PolynomialsFromList := function(L)
+    p := L[1][1];
+    r := L[1][2];
+    F<x> := PolynomialRing(GF(p^r));
+    polys := [];
+    for i in [2..#L] do
+        Coeffs := L[i];
+        f := F!(&+[Coeffs[j]*x^(j-1) : j in [1..#Coeffs]]);
+        //Coeffs[1] + Coeffs[2]*x + Coeffs[3]*x^2 + Coeffs[4]*x^3 + ...
+        polys cat:= [f];
+    end for;
+    return polys;
+end function;
+
+
+////////////////////////////////////////////
+
+//Code for finding curves with p-rank 0 using the Galois type method
+
+////////////////////////////////////////////
+
+
+function GaloisMethodSampleGenus3(p, r, sample)
+    q := p^r;
+    K := GF(q);
+    if q lt 7 then return []; end if;
+    sortKstar := Sort([a : a in K | a ne 0]);
+    R<x> := PolynomialRing(K);
+    polys := [[p,r]];
+    I := Matrix(2,[K|1,0,0,1]);
+    counter := 0;
+    
+    for i1 in [1..q-6] do
+        a1 := sortKstar[i1];
+        for i2 in [i1+1..q-5] do
+            a2 := sortKstar[i2];
+            for i3 in [i2+1..q-4] do
+                a3 := sortKstar[i3];
+                for i4 in [i3+1..q-3] do
+                    a4 := sortKstar[i4];
+                    for i5 in [i4+1..q-2] do
+                        a5 := sortKstar[i5];
+                        a6 := 1 - a1 - a2 - a3 - a4 - a5;
+                        if a5 ge a6 then continue i5; end if;
+
+
+                        basecase := Sort([a1,a2,a3,a4,a5,a6]);
+            
+                        for i in [1..6] do
+                            if 1 ne 7*basecase[i] then
+                                s := 1/(1-7*basecase[i]);
+                                newcase := Sort([-basecase[i]*s] cat [(basecase[j]-basecase[i])*s : j in [1..6] | j ne i]);
+                                if newcase lt basecase then continue i5; end if;
+                                //if newcase eq basecase then continue i5; end if;
+                            end if;
+                        end for;
+            
+                        // Put 0 at oo.
+            
+                        newbase := [1/basecase[i] : i in [1..6]];
+                
+                        sum := &+newbase;
+                        if sum ne 0 then
+                            s := 1/sum;
+                            newcase := Sort([a*s : a in newbase]);
+                            if newcase lt basecase then continue i5; end if;
+                            //if newcase eq basecase then continue i5; end if;
+                        end if;
+                
+                        for j in [1..6] do
+                            if sum ne 7*newbase[j] then
+                                s := 1/(sum-7*newbase[j]);
+                                newcase := Sort([-newbase[j]*s] cat [(newbase[k]-newbase[j])*s : k in [1..6] | k ne j]);
+                                if newcase lt basecase then continue i5; end if;
+                                //if newcase eq basecase then continue i5; end if;
+                            end if;
+                        end for;
+
+                        for i in [1..6] do
+                        // send ai to oo and oo to 0... x --> 1/(x-ai)
+                            newbase := [-1/basecase[i]] cat [1/(basecase[j]-basecase[i]) : j in [1..6] | j ne i];
+                            
+                            sum := &+newbase;
+                            if sum ne 0 then
+                                s := 1/sum;
+                                newcase := Sort([a*s : a in newbase]);
+                                if newcase lt basecase then continue i5; end if;
+                                //if newcase eq basecase then continue i5; end if;
+                            end if;
+                            
+                            for j in [1..6] do
+                                if sum ne 7*newbase[j] then
+                                    s := 1/(sum-7*newbase[j]);
+                                    newcase := Sort([-newbase[j]*s] cat [(newbase[k]-newbase[j])*s : k in [1..6] | k ne j]);
+                                    if newcase lt basecase then continue i5; end if;
+                                    //if newcase eq basecase then continue i5; end if;
+                                end if;
+                            end for;
+                        end for;
+                        
+                        // We got one!
+                        
+                        f := x*(x-a1)*(x-a2)*(x-a3)*(x-a4)*(x-a5)*(x-a6);
+
+                        p_rank := Rank(StableHasseWitt(HasseWittMatrix(f, p : r := r), p : r := r));
+
+                        if p_rank eq 0 then
+                            polys cat:= [[Integers()!a : a in Coefficients(f)]];
+                        end if;
+
+                        counter +:= 1;
+                        if counter ge sample then
+                            break i1;
+                        end if;
+                    end for;
+                end for;
+            end for;
+        end for;
+    end for;
+    
+    return polys;
+end function;
+
+function GaloisMethodSampleGenus4(p, r, sample)
+
+    q := p^r;
+    K := GF(q);
+    if q lt 9 then return []; end if;
+    sortKstar := Sort([a : a in K | a ne 0]);
+    R<x>:=PolynomialRing(K);
+    polys := [[p,r]];
+    counter := 0;
+  
+    
+    for i1 in [1..q-8] do
+        a1 := sortKstar[i1];
+        for i2 in [i1+1..q-7] do
+            a2 := sortKstar[i2];
+            for i3 in [i2+1..q-6] do
+                a3 := sortKstar[i3];
+                for i4 in [i3+1..q-5] do
+                    a4 := sortKstar[i4];
+                    for i5 in [i4+1..q-4] do
+                        a5 := sortKstar[i5];
+                        for i6 in [i5+1..q-3] do
+                            a6 := sortKstar[i6];
+                            for i7 in [i6+1..q-2] do
+                                a7 := sortKstar[i7];
+                                a8 := 1 - a1 - a2 - a3 - a4 - a5 - a6 - a7;
+                                if a7 ge a8 then continue i7; end if;
+                                  
+                                basecase := Sort([a1,a2,a3,a4,a5,a6,a7,a8]);
+                    
+                                for i in [1..8] do
+                                    if 1 ne 9*basecase[i] then
+                                        s := 1/(1-9*basecase[i]);
+                                        newcase := Sort([-basecase[i]*s] cat [(basecase[j]-basecase[i])*s : j in [1..8] | j ne i]);
+                                        if newcase lt basecase then continue i7; end if;
+                                    end if;
+                                end for;
+                    
+                                // Put 0 at oo.
+                    
+                                newbase := [1/basecase[i] : i in [1..8]];
+                        
+                                sum := &+newbase;
+                                if sum ne 0 then
+                                    s := 1/sum;
+                                    newcase := Sort([a*s : a in newbase]);
+                                    if newcase lt basecase then continue i7; end if;
+                                end if;
+                        
+                                for j in [1..8] do
+                                    if sum ne 9*newbase[j] then
+                                        s := 1/(sum-9*newbase[j]);
+                                        newcase := Sort([-newbase[j]*s] cat [(newbase[k]-newbase[j])*s : k in [1..8] | k ne j]);
+                                        if newcase lt basecase then continue i7; end if;
+                                    end if;
+                                end for;
+
+                                for i in [1..8] do
+                                // send ai to oo and oo to 0... x --> 1/(x-ai)
+                                    newbase := [-1/basecase[i]] cat [1/(basecase[j]-basecase[i]) : j in [1..8] | j ne i];
+                                    
+                                    sum := &+newbase;
+                                    if sum ne 0 then
+                                        s := 1/sum;
+                                        newcase := Sort([a*s : a in newbase]);
+                                        if newcase lt basecase then continue i7; end if;
+                                    end if;
+                                    
+                                    for j in [1..8] do
+                                        if sum ne 9*newbase[j] then
+                                            s := 1/(sum-9*newbase[j]);
+                                            newcase := Sort([-newbase[j]*s] cat [(newbase[k]-newbase[j])*s : k in [1..8] | k ne j]);
+                                            if newcase lt basecase then continue i7; end if;
+                                        end if;
+                                    end for;
+                                end for;
+                                
+                                // We got one!
+                                
+                                f := x*(x-a1)*(x-a2)*(x-a3)*(x-a4)*(x-a5)*(x-a6)*(x-a7)*(x-a8);
+                                p_rank := Rank(StableHasseWitt(HasseWittMatrix(f, p : r := r), p : r := r));
+
+                                if p_rank eq 0 then
+                                    polys cat:= [[Integers()!a : a in Coefficients(f)]];
+                                end if;
+
+
+                                counter +:= 1;
+                                if counter ge sample then
+                                    break i1;
+                                end if;
+                            end for;
+                        end for;
+                    end for;
+                end for;
+            end for;
+        end for;
+    end for;
+    return polys;
+end function;
+
+
+function GaloisMethodSampleGenus5(p, r, sample)
+    q := p^r;
+    K := GF(q);
+    if q lt 11 then return []; end if;
+    sortKstar := Sort([a : a in K | a ne 0]);
+    R<x>:=PolynomialRing(K);
+    polys := [[p,r]];
+    counter := 0;
+  
+    for i1 in [1..q-10] do
+        a1 := sortKstar[i1];
+        for i2 in [i1+1..q-9] do
+            a2 := sortKstar[i2];
+            for i3 in [i2+1..q-8] do
+                a3 := sortKstar[i3];
+                for i4 in [i3+1..q-7] do
+                    a4 := sortKstar[i4];
+                    for i5 in [i4+1..q-6] do
+                        a5 := sortKstar[i5];
+                        for i6 in [i5+1..q-5] do
+                            a6 := sortKstar[i6];
+                            for i7 in [i6+1..q-4] do
+                                a7 := sortKstar[i7];
+                                for i8 in [i7+1..q-3] do
+                                    a8 := sortKstar[i8];
+                                    for i9 in [i8+1..q-2] do
+                                        a9 := sortKstar[i9];
+                                        a10 := 1 - a1 - a2 - a3 - a4 - a5 - a6 - a7 - a8 - a9;
+                                        if a9 ge a10 then continue i9; end if;
+                            
+                                        basecase := Sort([a1,a2,a3,a4,a5,a6,a7,a8,a9,a10]);
+                            
+                                        for i in [1..10] do
+                                            if 1 ne 11*basecase[i] then
+                                                s := 1/(1-11*basecase[i]);
+                                                newcase := Sort([-basecase[i]*s] cat [(basecase[j]-basecase[i])*s : j in [1..10] | j ne i]);
+                                                if newcase lt basecase then continue i9; end if;
+                                            end if;
+                                        end for;
+                            
+                                        // Put 0 at oo.
+                            
+                                        newbase := [1/basecase[i] : i in [1..10]];
+                                
+                                        sum := &+newbase;
+                                        if sum ne 0 then
+                                            s := 1/sum;
+                                            newcase := Sort([a*s : a in newbase]);
+                                            if newcase lt basecase then continue i9; end if;
+                                        end if;
+                                
+                                        for j in [1..10] do
+                                            if sum ne 11*newbase[j] then
+                                                s := 1/(sum-11*newbase[j]);
+                                                newcase := Sort([-newbase[j]*s] cat [(newbase[k]-newbase[j])*s : k in [1..10] | k ne j]);
+                                                if newcase lt basecase then continue i9; end if;
+                                            end if;
+                                        end for;
+
+                                        for i in [1..10] do
+                                        // send ai to oo and oo to 0... x --> 1/(x-ai)
+                                            newbase := [-1/basecase[i]] cat [1/(basecase[j]-basecase[i]) : j in [1..10] | j ne i];
+                                            
+                                            sum := &+newbase;
+                                            if sum ne 0 then
+                                                s := 1/sum;
+                                                newcase := Sort([a*s : a in newbase]);
+                                                if newcase lt basecase then continue i9; end if;
+                                            end if;
+                                            
+                                            for j in [1..10] do
+                                                if sum ne 11*newbase[j] then
+                                                    s := 1/(sum-11*newbase[j]);
+                                                    newcase := Sort([-newbase[j]*s] cat [(newbase[k]-newbase[j])*s : k in [1..10] | k ne j]);
+                                                    if newcase lt basecase then continue i9; end if;
+                                                end if;
+                                            end for;
+                                        end for;
+                                        
+                                        // We got one!
+                                        
+                                        f := x*(x-a1)*(x-a2)*(x-a3)*(x-a4)*(x-a5)*(x-a6)*(x-a7)*(x-a8);
+                                        p_rank := Rank(StableHasseWitt(HasseWittMatrix(f, p : r := r), p : r := r));
+
+                                        if p_rank eq 0 then
+                                            polys cat:= [[Integers()!a : a in Coefficients(f)]];
+                                        end if;
+
+
+                                        counter +:= 1;
+                                        if counter ge sample then
+                                            break i1;
+                                        end if;
+                                    end for;
+                                end for;
+                            end for;
+                        end for;
+                    end for;
+                end for;
+            end for;
+        end for;
+    end for;
+    return polys;
+end function;
+
+
+/////////////////////////////
+
+//Example computations for Galois type method
+//Note that these computations tend to be quick
+
+/////////////////////////////
+
+/*
+for p in PrimesInInterval(10,100) do
+    polys := GaloisMethodSampleGenus3(p, 1, 10^9);
+    print(<p,#polys-1>);
+    Write("hyperelliptic_curve_data.txt", "//" cat Sprint(<"Gal",3,p,1>));
+    Write("hyperelliptic_curve_data.txt", "G_L" cat IntegerToString(p) cat ":=" cat Sprint(polys) cat ";");
+end for;
+
+for p in PrimesInInterval(10,100) do
+    polys := GaloisMethodSampleGenus4(p, 1, 10^9);
+    print(<p,#polys-1>);
+    Write("hyperelliptic_curve_data.txt", "//" cat Sprint(<"Gal",4,p,1>));
+    Write("hyperelliptic_curve_data.txt", "G_L" cat IntegerToString(p) cat ":=" cat Sprint(polys) cat ";");
+end for;
+
+
+for p in PrimesInInterval(10,100) do
+    polys := GaloisMethodSampleGenus5(p, 1, 10^9);
+    print(<p,#polys-1>);
+    Write("hyperelliptic_curve_data.txt", "//" cat Sprint(<"Gal",5,p,1>));
+    Write("hyperelliptic_curve_data.txt", "G_L" cat IntegerToString(p) cat ":=" cat Sprint(polys) cat ";");
+end for;
+*/
+
+///////////////////////////
+
+//Code for finding curves with p-rank 0 using the family method.
+
+//////////////////////////
+
+FamilyMethodSampleGenus3 := function(p, r, sample : numcurves := 1000)
+
+    Fq := GF(p^r);
+    sortFq := [a : a in Fq];
+    sortFqstar := [a : a in sortFq | a ne 0];
+    F<x> := PolynomialRing(Fq);
+    polys := [[p,r]];
+    counter := 0;
+
+    for a1 in sortFqstar do
+        for a2 in sortFq do
+            for a3 in sortFq do
+                for a4 in sortFq do
+                    for a5 in sortFq do
+                        f := F!(x^7 + a1*x^5 + a1*x^4 + a2*x^3 + a3*x^2 + a4*x + a5);
+
+                        if Discriminant(f) eq 0 then continue a5; end if;
+
+                        p_rank := Rank(StableHasseWitt(HasseWittMatrix(f, p : r := r), p : r := r));
+
+                        if p_rank eq 0 then
+                            polys cat:= [[Integers()!a : a in Coefficients(f)]];
+                        end if;
+
+                        if #polys-1 ge numcurves then
+                            break a1;
+                        end if;
+
+                        counter +:= 1;
+                        if counter ge sample then
+                            break a1;
+                        end if;
+                    end for;
+                end for;
+            end for;
+        end for;
+    end for;
+    return polys;
+end function; 
+
+FamilyMethodSampleGenus4 := function(p, r, sample : numcurves := 1000)
+
+    Fq := GF(p^r);
+    sortFq := [a : a in Fq];
+    sortFqstar := [a : a in sortFq | a ne 0];
+    F<x> := PolynomialRing(Fq);
+    polys := [[p,r]];
+    counter := 0;
+
+    for a1 in sortFqstar do
+        for a2 in sortFq do
+            for a3 in sortFq do
+                for a4 in sortFq do
+                    for a5 in sortFq do
+                        for a6 in sortFq do
+                            for a7 in sortFq do
+                                f := F!(x^9 + a1*x^7 + a1*x^6 + a2*x^5 + a3*x^4 + a4*x^3 + a5*x^2 + a6*x + a7);
+
+                                if Discriminant(f) eq 0 then continue a7; end if;
+
+                                p_rank := Rank(StableHasseWitt(HasseWittMatrix(f, p : r := r), p : r := r));
+
+                                if p_rank eq 0 then
+                                    polys cat:= [[Integers()!a : a in Coefficients(f)]];
+                                end if;
+
+                                if #polys-1 ge numcurves then
+                                    break a1;
+                                end if;
+
+                                counter +:= 1;
+                                if counter ge sample then
+                                    break a1;
+                                end if;
+                            end for;
+                        end for;
+                    end for;
+                end for;
+            end for;
+        end for;
+    end for;
+    return polys;
+end function; 
+
+
+
+FamilyMethodSampleGenus5 := function(p, r, sample : numcurves := 1000)
+
+    Fq := GF(p^r);
+    sortFq := [a : a in Fq];
+    sortFqstar := [a : a in sortFq | a ne 0];
+    F<x> := PolynomialRing(Fq);
+    polys := [[p,r]];
+    counter := 0;
+
+    for a1 in sortFqstar do
+        for a2 in sortFq do
+            for a3 in sortFq do
+                for a4 in sortFq do
+                    for a5 in sortFq do
+                        for a6 in sortFq do
+                            for a7 in sortFq do
+                                for a8 in sortFq do
+                                    for a9 in sortFq do
+                                        f := F!(x^(11) + a1*x^9 + a1*x^8 + a2*x^7 + a3*x^6 + a4*x^5 + a5*x^4 + a6*x^3 + a7*x^2 + a8*x + a9);
+
+                                        if Discriminant(f) eq 0 then continue a9; end if;
+
+                                        p_rank := Rank(StableHasseWitt(HasseWittMatrix(f, p : r := r), p : r := r));
+
+                                        if p_rank eq 0 then
+                                            polys cat:= [[Integers()!a : a in Coefficients(f)]];
+                                        end if;
+
+                                        if #polys-1 ge numcurves then
+                                            break a1;
+                                        end if;
+
+                                        counter +:= 1;
+                                        if counter ge sample then
+                                            break a1;
+                                        end if;
+                                    end for;
+                                end for;
+                            end for;
+                        end for;
+                    end for;
+                end for;
+            end for;
+        end for;
+    end for;
+    return polys;
+end function; 
+
+
+////////////////////////////////////////////////////
+
+//Example computations for family method
+
+////////////////////////////////////////////////////
+
+/*
+for p in PrimesInInterval(10,100) do
+    time polys := FamilyMethodSampleGenus3(p, 1, 10^9);
+    print(<p,#polys-1>);
+    Write("hyperelliptic_curve_data.txt", "//" cat Sprint(<"fam",3,p,1>));
+    Write("hyperelliptic_curve_data.txt", "f_L" cat IntegerToString(p) cat ":=" cat Sprint(polys) cat ";");
+end for;
+
+
+for p in PrimesInInterval(10,100) do
+    time polys := FamilyMethodSampleGenus4(p, 1, 10^9);
+    print(<p,#polys-1>);
+    Write("hyperelliptic_curve_data.txt", "//" cat Sprint(<"fam",4,p,1>));
+    Write("hyperelliptic_curve_data.txt", "f_L" cat IntegerToString(p) cat ":=" cat Sprint(polys) cat ";");
+end for;
+
+
+for p in PrimesInInterval(10,12) do
+    time polys := FamilyMethodSampleGenus5(p, 1, 10^9);
+    print(<p,#polys-1>);
+    Write("hyperelliptic_curve_data.txt", "//" cat Sprint(<"fam",5,p,1>));
+    Write("hyperelliptic_curve_data.txt", "f_L" cat IntegerToString(p) cat ":=" cat Sprint(polys) cat ";");
+end for;
+*/
