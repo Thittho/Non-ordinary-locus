@@ -1,8 +1,6 @@
 # Irreducibility of p-Rank Strata
 
-In this repository, you will find all of the code and data related to the paper "Heuristics for (ir)reducibility of p-rank strata of the moduli space of hyperelliptic curves," which is available at [arXiv:2506.06457](https://arxiv.org/abs/2506.06457).  Information about usage of the code can be found below.
-
-## Computing p-Ranks
+In this repository, you will find all of the code and data related to the paper "Heuristics for (ir)reducibility of p-rank strata of the moduli space of hyperelliptic curves," which is available at [arXiv:2506.06457](https://arxiv.org/abs/2506.06457).  Information about usage of the code can be found below.  The first two sections detail how to build a sample of hyperelliptic curves, and the third section describes how to compute $p$-ranks of these curves.  
 
 ## Family Method
 
@@ -47,3 +45,5 @@ end for;
 ```
 
 **Note**: In order to load `galois.m` successfully, our helper program `tools.m` and Everett Howe's `Hyperelliptic3.magma` (found [here](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma)) must be available to be called.
+
+## Computing p-Ranks
