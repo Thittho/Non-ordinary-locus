@@ -1,3 +1,5 @@
-# Non-ordinary-locus
+# Irreducibility of p-Rank Strata
 
-This repository contains all the code and data gathered for our AWS project, recently published to the arXiv: https://arxiv.org/abs/2506.06457
+In this repository, you will find all of the code and data related to the paper "Heuristics for (ir)reducibility of p-rank strata of the moduli space of hyperelliptic curves," which is available at [arXiv:2506.06457](https://arxiv.org/abs/2506.06457).  Information about usage of the code can be found below:
+
+## Family Method
