@@ -1,14 +1,27 @@
 # Irreducibility of p-Rank Strata
 
-In this repository, you will find all of the code and data related to the paper "Heuristics for (ir)reducibility of p-rank strata of the moduli space of hyperelliptic curves," which is available at [arXiv:2506.06457](https://arxiv.org/abs/2506.06457).  Information about usage of the code can be found below:
+In this repository, you will find all of the code and data related to the paper "Heuristics for (ir)reducibility of p-rank strata of the moduli space of hyperelliptic curves," which is available at [arXiv:2506.06457](https://arxiv.org/abs/2506.06457).  Information about usage of the code can be found below.
+
+## Computing p-Ranks
 
 ## Family Method
 
 ## Galois Type Method
 
-The following information concerns the so-called Galois Type Method, described in Section 3.2 of the paper.  
+The following information concerns the **Galois Type Method**, described in Section 3.2 of the paper.  The program `galois.m` loads one primary command, `CurveDataForPGalois`, which provides a method for building a sample of hyperellptic curves over $\mathbb{F}_q$.
 
+Let $p$ be an odd prime, $r \geq 1$ an integer, and $q = p^r$.  Then, for $g \in \{3, 4, 5\}$, a prime power $q > 2g + 1$, and an integer $s \geq 1$, the command `CurveDataForPGalois(g, p, r, s)` returns a list $L$ of size $s$ of polynomials $f(x) \in \mathbb{F}_q[x]$ that split completely over $\mathbb{F}_q$, and which represent hyperelliptic curves $y^2 = f(x)$ of genus $g$ that are unique up to geometric isomorphism (see Algorithm 3.7).
 
+### Input
+* `g` - the genus (an integer 3, 4, or 5)
+* `p` - a rational prime
+* `r` - the power of p
+* `s` - the number of curves desired in the sample
+
+### Output
+* `L` - a list of polynomials $f(x) \in \mathbb{F}_q[x]$ that split completely over $\mathbb{F}_q$
+
+### Example
 ```cpp
 
 load "galois.m";
@@ -32,3 +45,5 @@ for p in PrimesInInterval(97,97) do
     end if;
 end for;
 ```
+
+**Note**: In order to load `galois.m` successfully, our helper program `tools.m` and Everett Howe's `Hyperelliptic3.magma` (found [here](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma)) must be available to be called.
