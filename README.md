@@ -4,6 +4,8 @@ In this repository, you will find all of the code and data related to the paper 
 
 ## Family Method
 
+Additional documentation coming shortly...
+
 ## Galois Type Method
 
 The following information concerns the **Galois Type Method**, described in Section 3.2 of the paper.  The program `galois.m` loads one primary command, `CurveDataForPGalois`, which provides a method for building a sample of hyperellptic curves over $\mathbb{F}_q$.
@@ -20,6 +22,7 @@ Let $p$ be an odd prime, $r \geq 1$ an integer, and $q = p^r$.  Then, for $g \in
 * `L` - a list of polynomials $f(x) \in \mathbb{F}_q[x]$ that split completely over $\mathbb{F}_q$
 
 ### Example
+A small example is given below.  See also `example_galois.m`.
 ```cpp
 
 load "galois.m";
@@ -47,3 +50,5 @@ end for;
 **Note**: In order to load `galois.m` successfully, our helper program `tools.m` and Everett Howe's `Hyperelliptic3.magma` (found [here](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma)) must be available to be called.
 
 ## Computing p-Ranks
+
+Additional documentation coming shortly...
