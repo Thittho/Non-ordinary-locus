@@ -24,26 +24,17 @@ Let $p$ be an odd prime, $r \geq 1$ an integer, and $q = p^r$.  Then, for $g \in
 ### Example
 A small example is given below.  A longer example can be found in the file [example_galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/example_galois.m).
 ```cpp
-load "galois.m";
-
-g := 5; // g is the genus
-r := 3; // r is the power of p
-s := 100000000; // s is the number of samples
-
-doc := "~/github/Non-ordinary-locus/data/galois_family/genus-" cat Sprint(g) cat "/p_rank_fp" cat Sprint(r) cat ".m";
-
-for p in PrimesInInterval(97,97) do
-    printf "p = %o\n", p;
-    time p_ranks := CurveDataForPGalois(g, p, r, s);
-    printf "p-rank data = %o\n", p_ranks;
-    non_ord := &+p_ranks[1..g];
-    tot := &+p_ranks;
-    if tot ne 0 then
-        "p = ", p;
-        RealField(20)!(p^r * non_ord/tot);
-        Write(doc, [p, r, tot] cat p_ranks);
-    end if;
-end for;
+> load "galois.m";
+Loading "galois.m"
+Loading "Hyperelliptic3.magma"
+Loading "Hyperelliptic2.magma"
+> g := 4; p := 53; r := 2; s := 100000;
+> CurveDataForPGalois(g, p, r, s);
+Creating list of curves...
+Time: 59.050
+Computing p-ranks...
+Time: 8.380
+[ 0, 0, 0, 37, 99963 ]
 ```
 
 **Note**: In order to load [galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/galois.m) successfully, our helper program [tools.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/tools.m), as well as Everett Howe's [Hyperelliptic3.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma) and [Hyperelliptic2.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic2.magma) must be accessible. 
