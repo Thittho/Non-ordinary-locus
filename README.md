@@ -22,8 +22,7 @@ Let $p$ be an odd prime, $r \geq 1$ an integer, and $q = p^r$.  Then, the comman
 A small example is given below.  This example was run on a ThinkPad X1 Carbon (6th Gen) equipped with an IntelCore i5-8350U processor and 16GB of RAM.
 
 ```cpp
-> load "tools.m";
-Loading "tools.m"
+> Attach("tools.m");
 >
 > CurveDataForP(4, 13, 2 : s := 1000000);
 Creating curves...
