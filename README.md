@@ -48,6 +48,9 @@ end for;
 
 **Note**: In order to load [galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/galois.m) successfully, our helper program [tools.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/tools.m), as well as Everett Howe's [Hyperelliptic3.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma) and [Hyperelliptic2.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic2.magma) must be accessible. 
 
+### Data
+The data collected using this method can be found in the directory [data/galois_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/galois_family).  The data is broken up by genus. 
+
 ## Computing p-Ranks
 
 Additional documentation coming shortly...
