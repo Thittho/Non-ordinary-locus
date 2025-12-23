@@ -22,22 +22,24 @@ Let $p$ be an odd prime, $r \geq 1$ an integer, and $q = p^r$.  Then, for $g \in
 * `L` - a list of polynomials $f(x) \in \mathbb{F}_q[x]$ that split completely over $\mathbb{F}_q$
 
 ### Example
-A small example is given below.  A longer example can be found in the file [example_galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/example_galois.m).
+A small example is given below.  This example was run on a ThinkPad X1 Carbon (6th Gen) equipped with an [IntelCore i5-8350U Processor](https://www.intel.com/content/www/us/en/products/sku/124969/intel-core-i58350u-processor-6m-cache-up-to-3-60-ghz/specifications.html) and 16GB of RAM.
+
+A longer example can be found in the file [example_galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/example_galois.m).
 ```cpp
 > load "galois.m";
 Loading "galois.m"
 Loading "Hyperelliptic3.magma"
 Loading "Hyperelliptic2.magma"
-> g := 4; p := 53; r := 2; s := 100000;
-> CurveDataForPGalois(g, p, r, s);
+>
+> CurveDataForPGalois(4, 13, 2, 1000000);
 Creating list of curves...
-Time: 59.050
+Time: 587.430
 Computing p-ranks...
-Time: 8.380
-[ 0, 0, 0, 37, 99963 ]
+Time: 60.150
+[ 0, 0, 48, 6063, 993889 ]
 ```
 
-**Note**: In order to load [galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/galois.m) successfully, our helper program [tools.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/tools.m), as well as Everett Howe's [Hyperelliptic3.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma) and [Hyperelliptic2.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic2.magma) must be accessible. 
+**Note**: In order to load [galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/galois.m) successfully, our helper program [tools.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/tools.m) as well as Everett Howe's [Hyperelliptic3.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma) and [Hyperelliptic2.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic2.magma) must be accessible. 
 
 ### Data
 The data collected using this method can be found in the directory [data/galois_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/galois_family).  The data is broken up by genus. 
