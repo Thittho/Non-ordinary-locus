@@ -43,7 +43,3 @@ Time: 60.150
 
 ### Data
 The data collected using this method can be found in the directory [data/galois_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/galois_family).  The data is broken up by genus. 
-
-## Computing p-Ranks
-
-Additional documentation coming shortly...
