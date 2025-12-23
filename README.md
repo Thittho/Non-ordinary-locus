@@ -24,7 +24,6 @@ Let $p$ be an odd prime, $r \geq 1$ an integer, and $q = p^r$.  Then, for $g \in
 ### Example
 A small example is given below.  This example was run on a ThinkPad X1 Carbon (6th Gen) equipped with an [IntelCore i5-8350U Processor](https://www.intel.com/content/www/us/en/products/sku/124969/intel-core-i58350u-processor-6m-cache-up-to-3-60-ghz/specifications.html) and 16GB of RAM.
 
-A longer example can be found in the file [example_galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/example_galois.m).
 ```cpp
 > load "galois.m";
 Loading "galois.m"
@@ -38,6 +37,8 @@ Computing p-ranks...
 Time: 60.150
 [ 0, 0, 48, 6063, 993889 ]
 ```
+
+A longer example can be found in the file [example_galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/example_galois.m).
 
 **Note**: In order to load [galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/galois.m) successfully, our helper program [tools.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/tools.m) as well as Everett Howe's [Hyperelliptic3.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma) and [Hyperelliptic2.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic2.magma) must be accessible. 
 
