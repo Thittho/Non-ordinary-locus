@@ -22,7 +22,7 @@ Let $p$ be an odd prime, $r \geq 1$ an integer, and $q = p^r$.  Then, for $g \in
 * `L` - a list of polynomials $f(x) \in \mathbb{F}_q[x]$ that split completely over $\mathbb{F}_q$
 
 ### Example
-A small example is given below.  See also `example_galois.m`.
+A small example is given below.  A longer example can be found in the file `example_galois.m`.
 ```cpp
 
 load "galois.m";
