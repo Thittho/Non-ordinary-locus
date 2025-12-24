@@ -1,6 +1,6 @@
 # Irreducibility of p-Rank Strata
 
-In this repository, you will find all of the code and data related to the paper "Heuristics for (ir)reducibility of p-rank strata of the moduli space of hyperelliptic curves," which is available at [arXiv:2506.06457](https://arxiv.org/abs/2506.06457).  Information about usage of the code can be found below.  The first two sections detail how to build a sample of hyperelliptic curves, and the third section describes how to compute $p$-ranks of these curves.  
+In this repository, you will find all of the code and data related to the paper "Heuristics for (ir)reducibility of p-rank strata of the moduli space of hyperelliptic curves," which is available at [arXiv:2506.06457](https://arxiv.org/abs/2506.06457).  Information regarding usage of the code can be found below.  Data can be found in the directory [/data](https://github.com/Thittho/Non-ordinary-locus/tree/main/data).
 
 ## Family Method
 
@@ -39,7 +39,7 @@ Time: 59.720
 A longer example can be found in the file [example.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/example.m).
 
 ### Data
-The data collected using this method for genus $g = 3, 4, 5$ can be found in the directory [data/7_dim_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/7_dim_family).  The data for genus $6 \leq g \leq 20$ can be found in [data/higher_genus_data](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/higher_genus_data).
+The data collected using this method for genus $g = 3, 4, 5$ can be found in the directory [data/7_dim_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/7_dim_family).  The data for genus $6 \leq g \leq 20$ can be found in [/data/higher_genus_data](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/higher_genus_data).
 
 
 ## Galois Type Method
@@ -80,4 +80,4 @@ A longer example can be found in the file [example_galois.m](https://github.com/
 **Note**: In order to load [galois.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/galois.m) successfully, our helper program [tools.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/tools.m) as well as Everett Howe's [Hyperelliptic3.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic3.magma) and [Hyperelliptic2.magma](https://github.com/everetthowe/hyperelliptic/blob/main/Hyperelliptic2.magma) must be accessible. 
 
 ### Data
-The data collected using this method can be found in the directory [data/galois_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/galois_family).  The data is broken up by genus. 
+The data collected using this method can be found in the directory [/data/galois_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/galois_family). 
