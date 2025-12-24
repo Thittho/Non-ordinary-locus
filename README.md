@@ -39,7 +39,7 @@ Time: 59.720
 A longer example can be found in the file [example.m](https://github.com/Thittho/Non-ordinary-locus/blob/main/example.m).
 
 ### Data
-The data collected using this method for genus $g = 3, 4, 5$ can be found in the directory [data/7_dim_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/7_dim_family).  The data for genus $6 \leq g \leq 20$ can be found in [/data/higher_genus_data](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/higher_genus_data).
+The data collected using this method for genus $g = 3, 4, 5$ can be found in the directory [/data/7_dim_family](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/7_dim_family).  The data for genus $6 \leq g \leq 20$ can be found in [/data/higher_genus_data](https://github.com/Thittho/Non-ordinary-locus/tree/main/data/higher_genus_data).
 
 
 ## Galois Type Method
